@@ -60,7 +60,8 @@
   <!-- TODO: fix API Key -->
   <!-- TODO: rm Puerto Rico from geojson -->
 
-  <l-map :style="mapStyle" :zoom="zoom" :center="center">
+  <l-map :style="mapStyle" :zoom="zoom" :minZoom="minZoom" :maxZoom="maxZoom" :center="center">
+    <!-- :bounds="bounds" :max-bounds="maxBounds"> -->
     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
     <l-geo-json :geojson="geojson" :options="options" :options-style="styleFunction"></l-geo-json>
     <l-geo-json :geojson="states" :options-style="styleFunctionState"></l-geo-json>
@@ -76,6 +77,9 @@
 // @ is an alias to /src
 
 // import L from 'leaflet';
+import {
+  // latLngBounds
+} from "leaflet";
 import {
   LMap,
   LTileLayer,
@@ -97,6 +101,85 @@ export default {
     LMap,
     LTileLayer,
     LGeoJson
+  },
+  data() {
+    return ({
+      fetchData: false,
+      fillOpacity: 0.6,
+      height: 800, // height of map in px
+
+      // basemaps
+      url: 'https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.png',
+      labelUrl: 'https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lines/{z}/{x}/{y}{r}.png',
+      // url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png',
+      // labelUrl: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',
+      // url: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
+      // labelUrl: 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png',
+      // url: 'https://stamen-tiles-{s}.a.ssl.fastly.net/terrain-background/{z}/{x}/{y}{r}.png',
+      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+
+      // map params
+      center: [38.967243, -103.771556],
+      // bounds: latLngBounds([
+      //   [40.70081290280357, -74.26963806152345],
+      //   [40.82991732677597, -74.08716201782228]
+      // ]),
+      // maxBounds: latLngBounds([
+      //   [40.70081290280357, -74.26963806152345],
+      //   [40.82991732677597, -74.08716201782228]
+      // ]),
+      minZoom: 3,
+      maxZoom: 11,
+      zoom: 5,
+
+      // data
+      geojson: null,
+      states: null,
+      counties: null,
+
+      // computed
+      totals: null,
+      totalCounties: null,
+      totalBarWidth: 300,
+      totalBarHeight: 25,
+
+      // input options
+      people: ["Rich", "Nancy", "Laura"],
+      colorPalette: {
+        "all": {
+          color: "#a65628",
+          label: "all"
+        },
+        "Rich": {
+          color: "#e41a1c",
+          label: "Rich"
+        },
+        "Nancy": {
+          color: "#3773b8",
+          label: "Nancy"
+        },
+        "Laura": {
+          color: "#ffff33",
+          label: "Laura"
+        },
+        "rhlh": {
+          color: "#ff7f00",
+          label: "Rich & Laura"
+        },
+        "nhlh": {
+          color: "#4daf4a",
+          label: "Nancy & Laura"
+        },
+        "rhnh": {
+          color: "#984ea3",
+          label: "Rich & Nancy"
+        },
+        "unknown": {
+          color: "#babab0",
+          label: "none"
+        }
+      }
+    })
   },
   computed: {
     mapStyle() {
@@ -163,67 +246,6 @@ export default {
         );
       };
     }
-  },
-  data() {
-    return ({
-      fetchData: true,
-      fillOpacity: 0.6,
-      height: 800, // height of map in px
-      url: 'https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.png',
-      labelUrl: 'https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lines/{z}/{x}/{y}{r}.png',
-      // url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png',
-      // labelUrl: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',
-      // url: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
-      // labelUrl: 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png',
-      // url: 'https://stamen-tiles-{s}.a.ssl.fastly.net/terrain-background/{z}/{x}/{y}{r}.png',
-      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      center: [38.967243, -103.771556],
-      geojson: null,
-      states: null,
-      markerLatLng: [51.505, -0.09],
-      zoom: 5,
-      fillColor: "#e4ce7f",
-      counties: null,
-      totals: null,
-      totalBarWidth: 300,
-      totalBarHeight: 25,
-      totalCounties: null,
-      people: ["Rich", "Nancy", "Laura"],
-      colorPalette: {
-        "all": {
-          color: "#a65628",
-          label: "all"
-        },
-        "Rich": {
-          color: "#e41a1c",
-          label: "Rich"
-        },
-        "Nancy": {
-          color: "#3773b8",
-          label: "Nancy"
-        },
-        "Laura": {
-          color: "#ffff33",
-          label: "Laura"
-        },
-        "rhlh": {
-          color: "#ff7f00",
-          label: "Rich & Laura"
-        },
-        "nhlh": {
-          color: "#4daf4a",
-          label: "Nancy & Laura"
-        },
-        "rhnh": {
-          color: "#984ea3",
-          label: "Rich & Nancy"
-        },
-        "unknown": {
-          color: "#babab0",
-          label: "none"
-        }
-      }
-    })
   },
   async created() {
     this.loadData();
