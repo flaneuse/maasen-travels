@@ -1,23 +1,32 @@
 <template>
 <div>
-  <div>
-    Where in the United States have the Hughes family gone?
-  </div>
-  <template v-if="totals">
-    <div v-for="(person, pIdx) in people" :key="pIdx">
-      <h1>{{person}}: {{totals[person]["total"]}}</h1>
-      <svg :width="totalBarWidth + 150" :height="totalBarHeight">
-        <rect :width="totals[person]['barWidth']" :height="totalBarHeight" :fill="colorPalette[person]['color']"></rect>
-        <rect :width="totalBarWidth/2" :height="totalBarHeight" fill="none" stroke-dasharray="4,4" stroke="#ccc"></rect>
-        <rect :width="totalBarWidth/4" :height="totalBarHeight" fill="none" stroke-dasharray="4,4" stroke="#ccc"></rect>
-        <rect :width="(totalBarWidth/4)*3" :height="totalBarHeight" fill="none" stroke-dasharray="4,4" stroke="#ccc"></rect>
-        <rect :width="totalBarWidth" :height="totalBarHeight" fill="none" stroke="#000"></rect>
-        <text :x="totalBarWidth" dx="5" :y="totalBarHeight/2" style="text-anchor: start; alignment-baseline: central;">{{totals[person]["percentFormatted"]}} complete</text>
-      </svg>
-    </div>
-  </template>
+  <h1>
+    How many counties in the United States have the Hughes family visited?
+  </h1>
+  <table v-if="totals">
+    <tr v-for="(person, pIdx) in people" :key="pIdx" class="text-right">
+      <td class="px-2">
+        <h3>{{person}}</h3>
+      </td>
+      <td class="px-2">
+        <h3>{{totals[person]["total"]}}</h3>
+      </td>
+      <td class="px-2">
+        <svg :width="totalBarWidth" :height="totalBarHeight">
+          <rect :width="totals[person]['barWidth']" :height="totalBarHeight" :fill="colorPalette[person]['color']"></rect>
+          <rect :width="totalBarWidth/2" :height="totalBarHeight" fill="none" stroke-dasharray="4,4" stroke="#ccc"></rect>
+          <rect :width="totalBarWidth/4" :height="totalBarHeight" fill="none" stroke-dasharray="4,4" stroke="#ccc"></rect>
+          <rect :width="(totalBarWidth/4)*3" :height="totalBarHeight" fill="none" stroke-dasharray="4,4" stroke="#ccc"></rect>
+          <rect :width="totalBarWidth" :height="totalBarHeight" fill="none" stroke="#000"></rect>
+        </svg>
+      </td>
+      <td>
+        {{totals[person]["percentFormatted"]}} complete
+      </td>
+    </tr>
+  </table>
 
-  <div id="legend" class="d-flex my-4">
+  <div id="legend" class="d-flex flex-wrap my-4 mx-5">
     <div v-for="(item, idx) in colorPalette" :key="idx" class="d-flex mx-3">
       <div :style="{width: '20px', height: '20px', backgroundColor: item.color, marginRight: '10px'}">
       </div>
@@ -104,7 +113,7 @@ export default {
   },
   data() {
     return ({
-      fetchData: false,
+      fetchData: true,
       fillOpacity: 0.6,
       height: 800, // height of map in px
 
