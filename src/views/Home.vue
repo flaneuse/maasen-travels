@@ -264,26 +264,28 @@ export default {
 
           this.geojson["features"].forEach(d => {
             const filtered = results.filter(row => row.id == d.properties.AFFGEOID);
-            d["properties"]["population"] = filtered[0].population_2019;
-            d["properties"]["state"] = filtered[0].state;
+            if (filtered.length == 1) {
+              d["properties"]["population"] = filtered[0].population_2019;
+              d["properties"]["state"] = filtered[0].state;
 
-            const rich = filtered[0].Rich === "1";
-            const nancy = filtered[0].Nancy === "1";
-            const laura = filtered[0].Laura === "1";
-            // calculating the color
-            const value = rich && nancy && laura ? "all" :
-              rich && nancy ? "rhnh" :
-              rich && laura ? "rhlh" :
-              nancy && laura ? "nhlh" :
-              rich ? "Rich" :
-              nancy ? "Nancy" :
-              laura ? "Laura" :
-              "unknown";
-            d["properties"]["rich"] = rich;
-            d["properties"]["nancy"] = nancy;
-            d["properties"]["laura"] = laura;
+              const rich = filtered[0].Rich === "1";
+              const nancy = filtered[0].Nancy === "1";
+              const laura = filtered[0].Laura === "1";
+              // calculating the color
+              const value = rich && nancy && laura ? "all" :
+                rich && nancy ? "rhnh" :
+                rich && laura ? "rhlh" :
+                nancy && laura ? "nhlh" :
+                rich ? "Rich" :
+                nancy ? "Nancy" :
+                laura ? "Laura" :
+                "unknown";
+              d["properties"]["rich"] = rich;
+              d["properties"]["nancy"] = nancy;
+              d["properties"]["laura"] = laura;
 
-            d["properties"]["fillColor"] = this.colorPalette[value].color;
+              d["properties"]["fillColor"] = this.colorPalette[value].color;
+            }
           })
         });
       }
