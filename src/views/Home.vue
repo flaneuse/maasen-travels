@@ -5,6 +5,14 @@
   </h1>
   <table v-if="totals">
     <tr v-for="(person, pIdx) in people" :key="pIdx" class="text-right">
+          <td class="px-2">
+            <input type="checkbox" :id="person" :value="person" v-model="selectedPeople">
+
+            <!-- <label class="b-contain m-auto">
+              <input v-model="selectedPeople" :id="person" :value="person" type="checkbox" />
+              <div class="b-input" />
+            </label> -->
+          </td>
       <td class="px-2">
         <h3>{{person}}</h3>
       </td>
@@ -154,6 +162,7 @@ export default {
 
       // input options
       people: ["Rich", "Nancy", "Laura"],
+      selectedPeople: ["Rich", "Nancy", "Laura"],
       colorPalette: {
         "all": {
           color: "#a65628",
@@ -185,7 +194,7 @@ export default {
         },
         "unknown": {
           color: "#babab0",
-          label: "none"
+          label: "no one"
         }
       }
     })
