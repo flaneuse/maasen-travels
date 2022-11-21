@@ -21,3 +21,5 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+package-lock.json
+src/assets/cb_2018_us_county_20m_original.json
