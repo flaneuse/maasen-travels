@@ -2,15 +2,5 @@ const bootstrapSassAbstractsImports = require('vue-cli-plugin-bootstrap-vue/sass
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production'
   ? '/hughes-travels/'
-  : '/',
-  css: {
-    loaderOptions: {
-      sass: {
-        additionalData: bootstrapSassAbstractsImports.join('\n')
-      },
-      scss: {
-        additionalData: [...bootstrapSassAbstractsImports, ''].join(';\n')
-      }
-    }
-  }
+  : '/'
 }
