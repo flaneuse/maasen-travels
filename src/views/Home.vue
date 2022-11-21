@@ -45,15 +45,11 @@
 
   </div>
 
-  <!-- TODO: git commit -->
-  <!-- TODO: bar graph towards completion -->
   <!-- TODO: switch bar graph by number of counties, percent area, percent pop -->
   <!-- TODO: filters: on/off for people -->
   <!-- TODO: bar graphs by state -->
   <!-- TODO: zoom into a state -->
   <!-- TODO: loading spinner -->
-  <!-- TODO: rm auth key; secret -->
-  <!-- TODO: publish -->
   <!-- TODO: avoid too many API calls? cache? -->
   <!-- TODO: button to check for new data, save as .geojson -->
   <!-- TODO: add data last fetched info -->
@@ -67,15 +63,13 @@
   <!-- TODO: Weight by pop, area, percent -->
   <!-- TODO: zoom to state (sep page?), mini map, table (missing, completed x person with name/pop/area + total), % complete bar-->
   <!-- TODO: mobile responsiveness -->
-  <!-- TODO: button to zoom to reset to full vide -->
-  <!-- TODO: hawaii/AK inplay -->
-  <!-- TODO: fix zoom/pan  extent -->
+  <!-- TODO: button to zoom to reset to full view -->
+  <!-- TODO: fix zoom/pan extent -->
   <!-- TODO: dim other counties, highlight with stroke on mouseover -->
   <!-- TODO: remove unneccessary packages -->
-  <!-- TODO switch data to updated maps -->
-  <!-- TODO merge in additional data? -->
+  <!-- TODO: switch data to updated maps -->
+  <!-- TODO: merge in additional data? -->
   <!-- TODO: fix API Key -->
-  <!-- TODO: rm Puerto Rico from geojson -->
 
   <l-map :style="mapStyle" :zoom="zoom" :minZoom="minZoom" :maxZoom="maxZoom" :center="center">
     <!-- :bounds="bounds" :max-bounds="maxBounds"> -->
