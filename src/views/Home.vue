@@ -17,8 +17,8 @@
     </div>
   </template>
 
-  <div id="legend" class="d-flex">
-    <div v-for="(item, idx) in colorPalette" :key="idx" class="d-flex mr-2">
+  <div id="legend" class="d-flex my-4">
+    <div v-for="(item, idx) in colorPalette" :key="idx" class="d-flex mx-3">
       <div :style="{width: '20px', height: '20px', backgroundColor: item.color, marginRight: '10px'}">
       </div>
       <div>
@@ -57,6 +57,8 @@
   <!-- TODO: remove unneccessary packages -->
   <!-- TODO switch data to updated maps -->
   <!-- TODO merge in additional data? -->
+  <!-- TODO: fix API Key -->
+  <!-- TODO: rm Puerto Rico from geojson -->
 
   <l-map :style="mapStyle" :zoom="zoom" :center="center">
     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
@@ -294,7 +296,4 @@ export default {
 }
 </script>
 <style lang="scss">
-.mr-2 {
-    margin-right: 1.5rem;
-}
 </style>
