@@ -23,6 +23,8 @@ jobs:
         node-version: '14'
     - run: npm install
     - name: build website
+      env:
+        VUE_APP_GOOGLESHEETS_API_KEY: ${{ secrets.VUE_APP_GOOGLESHEETS_API_KEY }}
       run: npm run build
     - name: Commit files
       run: |
