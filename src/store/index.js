@@ -86,6 +86,10 @@ export default new Vuex.Store({
           })
           .entries(results);
 
+          nested.forEach(d => {
+            d.total = d.value.total;
+          })
+
         context.state.stateTotals = nested;
 
         // process the google sheets: Merge together
