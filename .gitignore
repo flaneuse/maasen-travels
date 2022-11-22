@@ -23,3 +23,4 @@ pnpm-debug.log*
 *.sw?
 package-lock.json
 src/assets/cb_2018_us_county_20m_original.json
+data_cleanup/*

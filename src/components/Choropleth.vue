@@ -80,11 +80,12 @@ export default {
 
       // map params
       // center: [38.967243, -103.771556],
-      center: [28.681389,-82.46],
+      // center: [28.681389,-82.46],
+      center: [39.0, -76.7],
       minZoom: 3,
       maxZoom: 11,
-      zoom: 7,
-      fillOpacity: 0.6
+      zoom: 8,
+      fillOpacity: 0.8
     })
   },
   computed: {
@@ -99,8 +100,8 @@ export default {
     styleFunction() {
       return () => {
         return {
-          weight: 0.25,
-          color: "#000000",
+          weight: 2,
+          color: "#fff",
           opacity: 1,
           fillOpacity: this.fillOpacity
         };
