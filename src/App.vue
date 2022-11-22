@@ -8,6 +8,18 @@
   </div>
 </template>
 
+<script>
+
+import store from '@/store';
+
+export default {
+  name: 'App',
+  mounted(){
+     store.dispatch("fetchData");
+  }
+}
+</script>
+
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
