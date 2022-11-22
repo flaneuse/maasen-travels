@@ -2,7 +2,7 @@
 <div>
   <h1>{{name}}<span v-if="totalCounties">: {{totalCounties}} total counties</span></h1>
   <!-- {{loading}} -->
-  <BarGraphCompletion :totals="totalsByPerson" />
+  <BarGraphCompletionTable :totals="totalsByPerson" />
 
 <Choropleth :geojson="geojson" />
 
@@ -16,7 +16,7 @@ import store from '@/store';
 export default {
   name: 'State',
   components: {
-    BarGraphCompletion: () => import(/* webpackPrefetch: true */ `@/components/BarGraphCompletion.vue`),
+    BarGraphCompletionTable: () => import(/* webpackPrefetch: true */ `@/components/BarGraphCompletionTable.vue`),
     Choropleth: () => import(/* webpackPrefetch: true */ `@/components/Choropleth.vue`)
   },
   computed: {
@@ -25,6 +25,7 @@ export default {
       },
       totals() {
         const totals = store.getters.getStateTotal(this.name);
+        console.log(totals)
         return totals ? totals[0] : null;
       },
       geojson() {
