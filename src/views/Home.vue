@@ -99,16 +99,18 @@ import {
 
 // basemap from https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html
 // dictionary: https://www.census.gov/programs-surveys/geography/technical-documentation/records-layout/gaz-record-layouts.html
-import COUNTIES from "@/assets/cb_2018_us_county_20m.json";
+// import COUNTIES from "@/assets/cb_2018_us_county_20m.json";
 import STATES from "@/assets/cb_2018_us_state_20m.json";
 
-import {
-  format
-} from "d3-format";
+import store from '@/store';
 
-import {
-  nest
-} from "d3-collection";
+// import {
+//   format
+// } from "d3-format";
+//
+// import {
+//   nest
+// } from "d3-collection";
 
 export default {
   name: 'Home',
@@ -148,14 +150,14 @@ export default {
       zoom: 5,
 
       // data
-      geojson: null,
+      // geojson: null,
       states: null,
-      counties: null,
+      // counties: null,
 
       // computed
-      totals: null,
-      totalsByState: null,
-      totalCounties: null,
+      // totals: null,
+      // totalsByState: null,
+      // totalCounties: null,
       totalBarWidth: 300,
       totalBarHeight: 25,
 
@@ -199,6 +201,15 @@ export default {
     })
   },
   computed: {
+    loading() {
+      return store.state.loading
+    },
+    geojson() {
+      return store.state.geojson
+    },
+    totals() {
+      return store.state.totals
+    },
     mapStyle() {
       return (`height: ${this.height}px`)
     },
@@ -232,7 +243,7 @@ export default {
       return (feature, layer) => {
 
         layer.setStyle({
-          fillColor: feature.properties.fillColor
+          fillColor: this.colorPalette[feature.properties.fillColor].color
         });
 
         layer.bindTooltip(
@@ -268,92 +279,92 @@ export default {
     this.loadData();
   },
   methods: {
-    calcTotal(results, person, totalCounties) {
-      // calculate non-zero total
-
-      const total = results.map(d => +d[person]).reduce((prev, curr) => curr + prev);
-      const pct = total / totalCounties;
-      const pctFormatted = format(".1%")(pct);
-      const barWidth = pct * this.totalBarWidth;
-
-      return ({
-        total: total,
-        percent: pct,
-        percentFormatted: pctFormatted,
-        barWidth: barWidth
-      })
-    },
+    // calcTotal(results, person, totalCounties) {
+    //   // calculate non-zero total
+    //
+    //   const total = results.map(d => +d[person]).reduce((prev, curr) => curr + prev);
+    //   const pct = total / totalCounties;
+    //   const pctFormatted = format(".1%")(pct);
+    //   const barWidth = pct * this.totalBarWidth;
+    //
+    //   return ({
+    //     total: total,
+    //     percent: pct,
+    //     percentFormatted: pctFormatted,
+    //     barWidth: barWidth
+    //   })
+    // },
     loadData() {
-      this.loading = true;
-      const reader = require('g-sheets-api');
-      const readerOptions = {
-        apiKey: process.env.VUE_APP_GOOGLESHEETS_API_KEY,
-        sheetId: '1Jmjx3MKxUlREiJ0lul9gdQ73YPKSydAbX-ZLq9MDCVY',
-        sheetName: 'us_counties',
-        returnAllResults: true
-      };
-
-      if (this.fetchData) {
-        reader(readerOptions, (results) => {
-          // calculate overall totals by person
-          this.totals = {}
-          this.totalCounties = results.length;
-          // calculate totals
-          this.people.forEach(person => {
-            this.totals[person] = this.calcTotal(results, person, this.totalCounties);
-          })
-
-          // calculate totals by state
-          const nested = nest()
-            .key(d => d.state)
-            .rollup(values => {
-              let obj = {}
-
-              this.people.forEach(person => {
-                obj[person] = this.calcTotal(values, person, values.length);
-              })
-
-              return ({
-                total: values.length,
-                people: obj
-              })
-            })
-            .entries(results);
-          console.log(nested)
-
-          // process the google sheets: Merge together
-          this.loading = false;
-          this.geojson = COUNTIES;
-          this.states = STATES;
-
-          this.geojson["features"].forEach(d => {
-            const filtered = results.filter(row => row.id == d.properties.AFFGEOID);
-            if (filtered.length == 1) {
-              d["properties"]["population"] = filtered[0].population_2019;
-              d["properties"]["state"] = filtered[0].state;
-
-              const rich = filtered[0].Rich === "1";
-              const nancy = filtered[0].Nancy === "1";
-              const laura = filtered[0].Laura === "1";
-              // calculating the color
-              const value = rich && nancy && laura ? "all" :
-                rich && nancy ? "rhnh" :
-                rich && laura ? "rhlh" :
-                nancy && laura ? "nhlh" :
-                rich ? "Rich" :
-                nancy ? "Nancy" :
-                laura ? "Laura" :
-                "unknown";
-              d["properties"]["rich"] = rich;
-              d["properties"]["nancy"] = nancy;
-              d["properties"]["laura"] = laura;
-
-              d["properties"]["fillColor"] = this.colorPalette[value].color;
-            }
-          })
-        });
-      }
+      //   this.loading = true;
+      //   const reader = require('g-sheets-api');
+      //   const readerOptions = {
+      //     apiKey: process.env.VUE_APP_GOOGLESHEETS_API_KEY,
+      //     sheetId: '1Jmjx3MKxUlREiJ0lul9gdQ73YPKSydAbX-ZLq9MDCVY',
+      //     sheetName: 'us_counties',
+      //     returnAllResults: true
+      //   };
+      //
+      //   if (this.fetchData) {
+      //     reader(readerOptions, (results) => {
+      //       // calculate overall totals by person
+      //       this.totals = {}
+      //       this.totalCounties = results.length;
+      //       // calculate totals
+      //       this.people.forEach(person => {
+      //         this.totals[person] = this.calcTotal(results, person, this.totalCounties);
+      //       })
+      //
+      //       // calculate totals by state
+      //       const nested = nest()
+      //         .key(d => d.state)
+      //         .rollup(values => {
+      //           let obj = {}
+      //
+      //           this.people.forEach(person => {
+      //             obj[person] = this.calcTotal(values, person, values.length);
+      //           })
+      //
+      //           return ({
+      //             total: values.length,
+      //             people: obj
+      //           })
+      //         })
+      //         .entries(results);
+      //       console.log(nested)
+      //
+      //       // process the google sheets: Merge together
+      //       this.loading = false;
+      //       this.geojson = COUNTIES;
+      this.states = STATES;
+      //
+      //       this.geojson["features"].forEach(d => {
+      //         const filtered = results.filter(row => row.id == d.properties.AFFGEOID);
+      //         if (filtered.length == 1) {
+      //           d["properties"]["population"] = filtered[0].population_2019;
+      //           d["properties"]["state"] = filtered[0].state;
+      //
+      //           const rich = filtered[0].Rich === "1";
+      //           const nancy = filtered[0].Nancy === "1";
+      //           const laura = filtered[0].Laura === "1";
+      //           // calculating the color
+      //           const value = rich && nancy && laura ? "all" :
+      //             rich && nancy ? "rhnh" :
+      //             rich && laura ? "rhlh" :
+      //             nancy && laura ? "nhlh" :
+      //             rich ? "Rich" :
+      //             nancy ? "Nancy" :
+      //             laura ? "Laura" :
+      //             "unknown";
+      //           d["properties"]["rich"] = rich;
+      //           d["properties"]["nancy"] = nancy;
+      //           d["properties"]["laura"] = laura;
+      //
+      //           d["properties"]["fillColor"] = this.colorPalette[value].color;
+      //         }
+      //       })
+      //     });
     }
+    // }
   }
 }
 </script>
