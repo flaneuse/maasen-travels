@@ -35,7 +35,7 @@
 import store from '@/store';
 
 export default {
-  name: 'Home',
+  name: 'BarGraphCompletion',
   props: {
     totals: Object,
   },

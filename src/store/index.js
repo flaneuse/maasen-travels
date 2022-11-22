@@ -80,7 +80,8 @@ export default new Vuex.Store({
 
             return ({
               total: values.length,
-              people: obj
+              people: obj,
+              values: values
             })
           })
           .entries(results);
@@ -125,6 +126,15 @@ export default new Vuex.Store({
   getters: {
     getStateTotal: (state) => (name) => {
       return (state.stateTotals ? state.stateTotals.filter(d => d.key == name) : null)
+    },
+    getStateGeojson: (state) => (name) => {
+      if(state.geojson){
+        const geo = state.geojson.features.filter(d => d.properties.state == name);
+      return {features: geo}
+      } else {
+        return(null)
+      }
+
     }
   },
   modules: {},
