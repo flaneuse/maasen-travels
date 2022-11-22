@@ -106,6 +106,10 @@ import {
   format
 } from "d3-format";
 
+import {
+  nest
+} from "d3-collection";
+
 export default {
   name: 'Home',
   components: {
@@ -150,6 +154,7 @@ export default {
 
       // computed
       totals: null,
+      totalsByState: null,
       totalCounties: null,
       totalBarWidth: 300,
       totalBarHeight: 25,
@@ -263,6 +268,21 @@ export default {
     this.loadData();
   },
   methods: {
+    calcTotal(results, person, totalCounties) {
+      // calculate non-zero total
+
+      const total = results.map(d => +d[person]).reduce((prev, curr) => curr + prev);
+      const pct = total / totalCounties;
+      const pctFormatted = format(".1%")(pct);
+      const barWidth = pct * this.totalBarWidth;
+
+      return ({
+        total: total,
+        percent: pct,
+        percentFormatted: pctFormatted,
+        barWidth: barWidth
+      })
+    },
     loadData() {
       this.loading = true;
       const reader = require('g-sheets-api');
@@ -275,23 +295,31 @@ export default {
 
       if (this.fetchData) {
         reader(readerOptions, (results) => {
+          // calculate overall totals by person
           this.totals = {}
           this.totalCounties = results.length;
           // calculate totals
           this.people.forEach(person => {
-            // calculate non-zero total
-
-            const total = results.map(d => +d[person]).reduce((prev, curr) => curr + prev);
-            const pct = total / this.totalCounties;
-            const pctFormatted = format(".1%")(pct);
-            const barWidth = pct * this.totalBarWidth;
-            this.totals[person] = {
-              total: total,
-              percent: pct,
-              percentFormatted: pctFormatted,
-              barWidth: barWidth
-            };
+            this.totals[person] = this.calcTotal(results, person, this.totalCounties);
           })
+
+          // calculate totals by state
+          const nested = nest()
+            .key(d => d.state)
+            .rollup(values => {
+              let obj = {}
+
+              this.people.forEach(person => {
+                obj[person] = this.calcTotal(values, person, values.length);
+              })
+
+              return ({
+                total: values.length,
+                people: obj
+              })
+            })
+            .entries(results);
+          console.log(nested)
 
           // process the google sheets: Merge together
           this.loading = false;
