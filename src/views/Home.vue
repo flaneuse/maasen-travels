@@ -75,57 +75,48 @@
   <!-- TODO: merge in additional data? -->
   <!-- TODO: fix API Key -->
 
-  <l-map :style="mapStyle" :zoom="zoom" :minZoom="minZoom" :maxZoom="maxZoom" :center="center">
-    <!-- :bounds="bounds" :max-bounds="maxBounds"> -->
+<!-- :bounds="bounds" :max-bounds="maxBounds"> -->
+  <!-- <l-map :style="mapStyle" :zoom="zoom" :minZoom="minZoom" :maxZoom="maxZoom" :center="center">
+
     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
     <l-geo-json :geojson="geojson" :options="options" :options-style="styleFunction"></l-geo-json>
     <l-geo-json :geojson="states" :options-style="styleFunctionState"></l-geo-json>
     <l-tile-layer :url="labelUrl" :attribution="attribution"></l-tile-layer>
     <l-tile-layer :url="labelUrl" :attribution="attribution"></l-tile-layer>
-  </l-map>
+  </l-map> -->
 
+<!-- State-by-state totals -->
+<StateTotals :data="stateTotals" :people="people" v-if="stateTotals" />
 
 </div>
 </template>
 
 <script>
-// @ is an alias to /src
 
-// import L from 'leaflet';
 import {
-  // latLngBounds
 } from "leaflet";
-import {
-  LMap,
-  LTileLayer,
-  LGeoJson
-} from 'vue2-leaflet';
+// import {
+//   LMap,
+//   LTileLayer,
+//   LGeoJson
+// } from 'vue2-leaflet';
 
 // basemap from https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html
 // dictionary: https://www.census.gov/programs-surveys/geography/technical-documentation/records-layout/gaz-record-layouts.html
-// import COUNTIES from "@/assets/cb_2018_us_county_20m.json";
 import STATES from "@/assets/cb_2018_us_state_20m.json";
 
 import store from '@/store';
 
-// import {
-//   format
-// } from "d3-format";
-//
-// import {
-//   nest
-// } from "d3-collection";
-
 export default {
   name: 'Home',
   components: {
-    LMap,
-    LTileLayer,
-    LGeoJson
+    // LMap,
+    // LTileLayer,
+    // LGeoJson,
+    StateTotals: () => import(/* webpackPrefetch: true */ `@/components/StateTotals.vue`)
   },
   data() {
     return ({
-      fetchData: true,
       fillOpacity: 0.6,
       height: 800, // height of map in px
 
@@ -160,7 +151,6 @@ export default {
       totalBarHeight: 25,
 
       // input options
-      people: ["Rich", "Nancy", "Laura"],
       selectedPeople: ["Rich", "Nancy", "Laura"],
       colorPalette: {
         "all": {
@@ -202,11 +192,17 @@ export default {
     loading() {
       return store.state.loading
     },
+    people() {
+      return store.state.people
+    },
     geojson() {
       return store.state.geojson
     },
     totals() {
       return store.state.totals
+    },
+    stateTotals() {
+      return store.state.stateTotals
     },
     mapStyle() {
       return (`height: ${this.height}px`)
