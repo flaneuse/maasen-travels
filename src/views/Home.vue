@@ -3,6 +3,10 @@
   <h1>
     How many counties in the United States have the Hughes family visited?
   </h1>
+  <div class="d-flex align-items-center w-100" v-if="loading">
+    <strong class="mx-5">Loading...</strong>
+    <div class="spinner-border text-primary ml-auto" role="status" aria-hidden="true"></div>
+  </div>
   <table v-if="totals">
     <tr v-for="(person, pIdx) in people" :key="pIdx" class="text-right">
       <!-- <td class="px-2"> -->
