@@ -3,10 +3,11 @@
   <h1>
     How many counties in the United States have the Hughes family visited?
   </h1>
-  <div class="d-flex align-items-center w-100" v-if="loading">
+  <div class="d-flex align-items-center w-100 m-3" v-if="loading">
     <strong class="mx-5">Loading...</strong>
     <div class="spinner-border text-primary ml-auto" role="status" aria-hidden="true"></div>
   </div>
+
   <table v-if="totals">
     <tr v-for="(person, pIdx) in people" :key="pIdx" class="text-right">
       <!-- <td class="px-2"> -->
@@ -64,6 +65,9 @@
   <!-- TODO: merge in additional data? -->
   <!-- TODO: fix API Key -->
 
+
+  <Legend :colorPalette="colorPalette"/>
+
   <!-- :bounds="bounds" :max-bounds="maxBounds"> -->
   <l-map :style="mapStyle" :zoom="zoom" :minZoom="minZoom" :maxZoom="maxZoom" :center="center">
 
@@ -85,7 +89,7 @@ import {} from "leaflet";
 import {
   LMap,
   LTileLayer,
-  LGeoJson
+  LGeoJson,
 } from 'vue2-leaflet';
 
 // basemap from https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html
@@ -100,6 +104,7 @@ export default {
     LMap,
     LTileLayer,
     LGeoJson,
+    Legend: () => import(/* webpackPrefetch: true */ `@/components/Legend.vue`),
     StateTotals: () => import( /* webpackPrefetch: true */ `@/components/StateTotals.vue`)
   },
   data() {
