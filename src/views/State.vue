@@ -1,10 +1,10 @@
 <template>
-<div>
+<div class="d-flex flex-column align-items-center">
   <h1>{{name}}<span v-if="totalCounties">: {{totalCounties}} total counties</span></h1>
   <!-- {{loading}} -->
   <BarGraphCompletionTable :totals="totalsByPerson" />
 
-<Choropleth :geojson="geojson" />
+  <Choropleth :name="name" :geojson="geojson" class="my-5" />
 
 </div>
 </template>
@@ -25,7 +25,6 @@ export default {
       },
       totals() {
         const totals = store.getters.getStateTotal(this.name);
-        console.log(totals)
         return totals ? totals[0] : null;
       },
       geojson() {

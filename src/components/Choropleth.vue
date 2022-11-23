@@ -1,19 +1,22 @@
 <template>
-  <div>
-    <l-map :style="mapStyle" :zoom="zoom" :minZoom="minZoom" :maxZoom="maxZoom" :center="center">
-      <!-- :bounds="bounds" :max-bounds="maxBounds"> -->
-      <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-      <l-geo-json :geojson="geojson" :options="options" :options-style="styleFunction"></l-geo-json>
-      <!-- <l-geo-json :geojson="states" :options-style="styleFunctionState"></l-geo-json> -->
-      <l-tile-layer :url="labelUrl" :attribution="attribution"></l-tile-layer>
-      <l-tile-layer :url="labelUrl" :attribution="attribution"></l-tile-layer>
-    </l-map>
+<div>
+  <Legend :colorPalette="colorPalette"/>
+  <l-map :style="mapStyle" :zoom="zoom" :minZoom="minZoom" :maxZoom="maxZoom" :center="center" v-if="center">
+    <!-- :bounds="bounds" :max-bounds="maxBounds"> -->
+    <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+    <l-geo-json :geojson="geojson" :options="options" :options-style="styleFunction"></l-geo-json>
+    <!-- <l-geo-json :geojson="states" :options-style="styleFunctionState"></l-geo-json> -->
+    <l-tile-layer :url="labelUrl" :attribution="attribution"></l-tile-layer>
+    <l-tile-layer :url="labelUrl" :attribution="attribution"></l-tile-layer>
+  </l-map>
 
-  </div>
+</div>
 </template>
 
 
 <script>
+import CENTROIDS from "@/assets/state_centroids.json";
+import store from '@/store';
 
 import {
   LMap,
@@ -25,70 +28,43 @@ export default {
   name: 'Choropleth',
   props: {
     geojson: Object,
+    name: String
   },
   components: {
     LMap,
     LTileLayer,
-    LGeoJson
+    LGeoJson,
+    Legend: () => import(/* webpackPrefetch: true */ `@/components/Legend.vue`)
   },
   data() {
-    return({
+    return ({
       height: 700, // height of map in px
-      width: 800,
-      colorPalette: {
-        "all": {
-          color: "#a65628",
-          label: "all"
-        },
-        "Rich": {
-          color: "#e41a1c",
-          label: "Rich"
-        },
-        "Nancy": {
-          color: "#3773b8",
-          label: "Nancy"
-        },
-        "Laura": {
-          color: "#ffff33",
-          label: "Laura"
-        },
-        "rhlh": {
-          color: "#ff7f00",
-          label: "Rich & Laura"
-        },
-        "nhlh": {
-          color: "#4daf4a",
-          label: "Nancy & Laura"
-        },
-        "rhnh": {
-          color: "#984ea3",
-          label: "Rich & Nancy"
-        },
-        "unknown": {
-          color: "#babab0",
-          label: "no one"
-        }},
+      width: null,
       // basemaps
       url: 'https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.png',
       labelUrl: 'https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lines/{z}/{x}/{y}{r}.png',
-      // url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png',
-      // labelUrl: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',
-      // url: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
-      // labelUrl: 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png',
-      // url: 'https://stamen-tiles-{s}.a.ssl.fastly.net/terrain-background/{z}/{x}/{y}{r}.png',
       attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 
       // map params
-      // center: [38.967243, -103.771556],
-      // center: [28.681389,-82.46],
-      center: [39.0, -76.7],
+      center: null,
       minZoom: 3,
       maxZoom: 11,
-      zoom: 8,
+      zoom: null,
       fillOpacity: 0.8
     })
   },
+  mounted() {
+    const stateParams = CENTROIDS[this.name];
+    if (stateParams) {
+      this.zoom = stateParams.zoom;
+      this.center = [stateParams.lat, stateParams.lon];
+      this.width = stateParams.aspectRatio ? this.height * stateParams.aspectRatio : this.height;
+    }
+  },
   computed: {
+    colorPalette() {
+      return store.state.colorPalette
+    },
     mapStyle() {
       return (`height: ${this.height}px; width: ${this.width}px`)
     },
