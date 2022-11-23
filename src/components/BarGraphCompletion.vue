@@ -1,6 +1,4 @@
 <template>
-<div>
-  <td class="px-2">
     <svg :width="totalBarWidth" :height="totalBarHeight">
       <rect :width="totals['barWidth']" :height="totalBarHeight" :fill="fillColor"></rect>
       <rect :width="totalBarWidth/2" :height="totalBarHeight" fill="none" stroke-dasharray="4,4" stroke="#ccc"></rect>
@@ -8,12 +6,6 @@
       <rect :width="(totalBarWidth/4)*3" :height="totalBarHeight" fill="none" stroke-dasharray="4,4" stroke="#ccc"></rect>
       <rect :width="totalBarWidth" :height="totalBarHeight" fill="none" stroke="#000"></rect>
     </svg>
-  </td>
-  <td>
-    {{totals["percentFormatted"]}}
-  </td>
-
-</div>
 </template>
 
 <script>

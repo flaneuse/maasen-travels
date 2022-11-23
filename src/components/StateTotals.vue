@@ -4,20 +4,35 @@
   <table>
     <thead>
       <tr>
-        <th class="px-2 text-right pointer" @click="sort('name')">
+        <th class="px-2 text-right pointer" @click="sort('name')" rowspan="2">
           state
         </th>
-        <th class="px-2 pointer" @click="sort('counties')">
+        <th class="px-2 pointer" @click="sort('counties')" rowspan="2">
           counties
         </th>
         <template class="px-2" v-for="(person, phIdx) in people">
-          <th :key="phIdx + 'header'" class="pointer" @click="sort(person)">
+          <th :key="phIdx + 'header'" class="" colspan="4">
             {{person}}
           </th>
           <th :key="phIdx + 'header-spacer'">
-
           </th>
-
+        </template>
+      </tr>
+      <tr>
+        <template class="px-2" v-for="(person, phIdx2) in people">
+          <th :key="phIdx2 + 'header'" class="px-2">
+          </th>
+          <th :key="phIdx2 + 'header2'" class="px-2 pointer" @click="sort(person, 'percent')">
+            percent
+          </th>
+          <th :key="phIdx2 + 'header3'" class="px-2 pointer" @click="sort(person, 'total')">
+            total
+          </th>
+          <th :key="phIdx2 + 'header4'" class="px-2 pointer" @click="sort(person, 'totalRemaining')">
+            remaining
+          </th>
+          <th :key="phIdx2 + 'header5'">
+          </th>
         </template>
       </tr>
     </thead>
@@ -37,6 +52,17 @@
         <template v-for="(person, pIdx) in people">
           <td :key="pIdx + 'completion'">
             <BarGraphCompletion :totals="stateData.value.people[person]" />
+          </td>
+          <td class="mx-2" :key="pIdx + 'pct'">
+            {{stateData.value.people[person]["percentFormatted"]}}
+          </td>
+
+          <td class="mx-2" :key="pIdx + 'total'">
+            {{stateData.value.people[person]["total"]}}
+          </td>
+
+          <td class="mx-2" :key="pIdx + 'remaining'">
+            {{stateData.value.people[person]["totalRemaining"]}}
           </td>
           <td :key="pIdx + 'completion-spacer'" class="table-spacer">
           </td>
@@ -67,8 +93,7 @@ export default {
     this.dataCopy = this.data;
   },
   methods: {
-    sort(id) {
-      console.log(id)
+    sort(id, variable) {
       if (id === "counties") {
         if (this.sortVar == "-counties") {
           this.dataCopy.sort((a, b) => a.total - b.total);
@@ -90,12 +115,12 @@ export default {
       }
 
       if (this.people.includes(id)) {
-        if (this.sortVar == id) {
-          this.dataCopy.sort((a, b) => a.value.people[id].percent - b.value.people[id].percent);
-          this.sortVar = `-${id}`
+        if (this.sortVar == `${id}${variable}`) {
+          this.dataCopy.sort((a, b) => a.value.people[id][variable] - b.value.people[id][variable]);
+          this.sortVar = `-${id}${variable}`;
         } else {
-          this.dataCopy.sort((a, b) => b.value.people[id].percent - a.value.people[id].percent);
-          this.sortVar = id
+          this.dataCopy.sort((a, b) => b.value.people[id][variable] - a.value.people[id][variable]);
+          this.sortVar = `${id}${variable}`;
         }
       }
     }

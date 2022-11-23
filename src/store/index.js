@@ -30,6 +30,7 @@ const calcTotal = function(results, person, totalCounties, totalBarWidth = 300) 
   return ({
     total: total,
     percent: pct,
+    totalRemaining: totalCounties - total,
     percentFormatted: pctFormatted,
     barWidth: barWidth
   })
