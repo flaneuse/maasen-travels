@@ -2,7 +2,9 @@
 <div>
   <Legend :colorPalette="colorPalette"/>
 
-  <l-map :style="mapStyle" :zoom="zoom" :minZoom="minZoom" :maxZoom="maxZoom" :center="center" v-if="center">
+  {{width}}
+
+  <l-map :style="mapStyle" :zoom="zoom" :minZoom="minZoom" :maxZoom="maxZoom" :center="center">
     <!-- :bounds="bounds" :max-bounds="maxBounds"> -->
     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
     <l-geo-json :geojson="geojson" :options="options" :options-style="styleFunction"></l-geo-json>
@@ -16,7 +18,7 @@
 
 
 <script>
-import CENTROIDS from "@/assets/state_centroids.json";
+
 import store from '@/store';
 
 import {
@@ -29,7 +31,9 @@ export default {
   name: 'Choropleth',
   props: {
     geojson: Object,
-    name: String
+    center: Array,
+    zoom: Number,
+    width: Number
   },
   components: {
     LMap,
@@ -40,27 +44,18 @@ export default {
   data() {
     return ({
       height: 700, // height of map in px
-      width: null,
       // basemaps
       url: 'https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.png',
       labelUrl: 'https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lines/{z}/{x}/{y}{r}.png',
       attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 
       // map params
-      center: null,
       minZoom: 3,
       maxZoom: 11,
-      zoom: null,
       fillOpacity: 0.8
     })
   },
   mounted() {
-    const stateParams = CENTROIDS[this.name];
-    if (stateParams) {
-      this.zoom = stateParams.zoom;
-      this.center = [stateParams.lat, stateParams.lon];
-      this.width = stateParams.aspectRatio ? this.height * stateParams.aspectRatio : this.height;
-    }
   },
   computed: {
     colorPalette() {

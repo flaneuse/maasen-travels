@@ -4,7 +4,7 @@
   <!-- {{loading}} -->
   <BarGraphCompletionTable :totals="totalsByPerson" />
 
-  <Choropleth :name="name" :geojson="geojson" class="my-5" />
+  <Choropleth :zoom="zoom" :center="center" :width="widthChoro" :geojson="geojson" class="my-5" v-if="center"/>
 
 </div>
 </template>
@@ -12,6 +12,8 @@
 <script>
 
 import store from '@/store';
+
+import CENTROIDS from "@/assets/state_centroids.json";
 
 export default {
   name: 'State',
@@ -40,10 +42,20 @@ export default {
   data() {
     return({
       name: null,
+      zoom: null,
+      center: null,
+      widthChoro: null
     })
   },
   mounted() {
     this.name = this.$route.params.name;
+
+    const stateParams = CENTROIDS[this.name];
+    if (stateParams) {
+      this.zoom = stateParams.zoom;
+      this.center = [stateParams.lat, stateParams.lon];
+      this.widthChoro = stateParams.aspectRatio ? this.height * stateParams.aspectRatio : this.height;
+    }
   },
   methods: {
   }
