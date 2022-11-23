@@ -16,13 +16,7 @@
       <h3>{{totals[person]["total"]}}</h3>
     </td>
     <td class="px-2">
-      <svg :width="totalBarWidth" :height="totalBarHeight">
-        <rect :width="totals[person]['barWidth']" :height="totalBarHeight" :fill="'red'"></rect>
-        <rect :width="totalBarWidth/2" :height="totalBarHeight" fill="none" stroke-dasharray="4,4" stroke="#ccc"></rect>
-        <rect :width="totalBarWidth/4" :height="totalBarHeight" fill="none" stroke-dasharray="4,4" stroke="#ccc"></rect>
-        <rect :width="(totalBarWidth/4)*3" :height="totalBarHeight" fill="none" stroke-dasharray="4,4" stroke="#ccc"></rect>
-        <rect :width="totalBarWidth" :height="totalBarHeight" fill="none" stroke="#000"></rect>
-      </svg>
+      <BarGraphCompletion :totals="totals[person]" :fillColor="colorPalette[person].color"></BarGraphCompletion>
     </td>
     <td>
       {{totals[person]["percentFormatted"]}} complete
@@ -35,9 +29,12 @@
 import store from '@/store';
 
 export default {
-  name: 'BarGraphCompletion',
+  name: 'BarGraphCompletionTable',
   props: {
     totals: Object,
+  },
+  components: {
+    BarGraphCompletion: () => import( /* webpackPrefetch: true */ `@/components/BarGraphCompletion.vue`)
   },
   data() {
     return({
@@ -48,6 +45,9 @@ export default {
   computed: {
     people() {
       return store.state.people;
+    },
+    colorPalette() {
+      return store.state.colorPalette;
     }
   }
 }

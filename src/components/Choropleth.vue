@@ -1,6 +1,7 @@
 <template>
 <div>
   <Legend :colorPalette="colorPalette"/>
+
   <l-map :style="mapStyle" :zoom="zoom" :minZoom="minZoom" :maxZoom="maxZoom" :center="center" v-if="center">
     <!-- :bounds="bounds" :max-bounds="maxBounds"> -->
     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
