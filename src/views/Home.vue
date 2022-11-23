@@ -75,31 +75,29 @@
   <!-- TODO: merge in additional data? -->
   <!-- TODO: fix API Key -->
 
-<!-- :bounds="bounds" :max-bounds="maxBounds"> -->
-  <!-- <l-map :style="mapStyle" :zoom="zoom" :minZoom="minZoom" :maxZoom="maxZoom" :center="center">
+  <!-- :bounds="bounds" :max-bounds="maxBounds"> -->
+  <l-map :style="mapStyle" :zoom="zoom" :minZoom="minZoom" :maxZoom="maxZoom" :center="center">
 
     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
     <l-geo-json :geojson="geojson" :options="options" :options-style="styleFunction"></l-geo-json>
     <l-geo-json :geojson="states" :options-style="styleFunctionState"></l-geo-json>
     <l-tile-layer :url="labelUrl" :attribution="attribution"></l-tile-layer>
     <l-tile-layer :url="labelUrl" :attribution="attribution"></l-tile-layer>
-  </l-map> -->
+  </l-map>
 
-<!-- State-by-state totals -->
-<StateTotals :data="stateTotals" :people="people" v-if="stateTotals" />
+  <!-- State-by-state totals -->
+  <StateTotals :data="stateTotals" :people="people" v-if="stateTotals" class="my-5" />
 
 </div>
 </template>
 
 <script>
-
+import {} from "leaflet";
 import {
-} from "leaflet";
-// import {
-//   LMap,
-//   LTileLayer,
-//   LGeoJson
-// } from 'vue2-leaflet';
+  LMap,
+  LTileLayer,
+  LGeoJson
+} from 'vue2-leaflet';
 
 // basemap from https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html
 // dictionary: https://www.census.gov/programs-surveys/geography/technical-documentation/records-layout/gaz-record-layouts.html
@@ -110,10 +108,10 @@ import store from '@/store';
 export default {
   name: 'Home',
   components: {
-    // LMap,
-    // LTileLayer,
-    // LGeoJson,
-    StateTotals: () => import(/* webpackPrefetch: true */ `@/components/StateTotals.vue`)
+    LMap,
+    LTileLayer,
+    LGeoJson,
+    StateTotals: () => import( /* webpackPrefetch: true */ `@/components/StateTotals.vue`)
   },
   data() {
     return ({
