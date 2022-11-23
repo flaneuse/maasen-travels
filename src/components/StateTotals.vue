@@ -1,26 +1,28 @@
 <template>
 <div>
   <h3>Totals by state</h3>
-  <table>
+  <table class="mx-4">
     <thead>
+      <!-- main row -->
       <tr>
-        <th class="px-2 text-right pointer" @click="sort('name')" rowspan="2">
-          state
-        </th>
-        <th class="px-2 pointer" @click="sort('counties')" rowspan="2">
-          counties
-        </th>
         <template class="px-2" v-for="(person, phIdx) in people">
-          <th :key="phIdx + 'header'" class="" colspan="4">
+          <th :key="phIdx + 'state'" class="px-2 text-right pointer" @click="sort('name')" rowspan="2">
+            state
+          </th>
+          <th :key="phIdx + 'county'" class="px-2 text-center pointer" @click="sort('counties')" rowspan="2" v-if="phIdx === 0">
+            counties
+          </th>
+          <th :key="phIdx + 'header'" class="" colspan="4" :style="{backgroundColor: colorPalette[person].lightColor}">
             {{person}}
           </th>
           <th :key="phIdx + 'header-spacer'">
           </th>
         </template>
       </tr>
+      <!-- per-person row -->
       <tr>
         <template class="px-2" v-for="(person, phIdx2) in people">
-          <th :key="phIdx2 + 'header'" class="px-2">
+          <th :key="phIdx2 + 'header1'" class="px-2">
           </th>
           <th :key="phIdx2 + 'header2'" class="px-2 pointer" @click="sort(person, 'percent')">
             percent
@@ -38,20 +40,20 @@
     </thead>
     <tbody>
       <tr v-for="(stateData, sIdx) in dataCopy" :key="sIdx">
-        <!-- state name with link -->
-        <td class="text-right px-2">
-          <router-link :to="{name: 'State', params: {name: stateData.key}}">{{stateData.key}}</router-link>
-        </td>
-
-        <!-- total number of counties -->
-        <td class="text-right px-2">
-          {{stateData.value.total}}
-        </td>
-
         <!-- completion by person -->
         <template v-for="(person, pIdx) in people">
+          <!-- state name with link -->
+          <td class="text-right line-height-1 px-2" :key="pIdx + 'personstate'">
+            <router-link :to="{name: 'State', params: {name: stateData.key}}">{{stateData.key}}</router-link>
+          </td>
+
+          <!-- total number of counties -->
+          <td class="px-2" v-if="pIdx === 0" :key="pIdx + 'personcounty'">
+            {{stateData.value.total}}
+          </td>
+
           <td :key="pIdx + 'completion'">
-            <BarGraphCompletion :totals="stateData.value.people[person]" />
+            <BarGraphCompletion :totals="stateData.value.people[person]" :fillColor="colorPalette[person].color" />
           </td>
           <td class="mx-2" :key="pIdx + 'pct'">
             {{stateData.value.people[person]["percentFormatted"]}}
@@ -74,6 +76,8 @@
 </template>
 
 <script>
+import store from '@/store';
+
 export default {
   name: 'StateTotals',
   props: {
@@ -82,6 +86,11 @@ export default {
   },
   components: {
     BarGraphCompletion: () => import( /* webpackPrefetch: true */ `@/components/BarGraphCompletion.vue`)
+  },
+  computed: {
+    colorPalette() {
+      return store.state.colorPalette
+    }
   },
   data() {
     return ({
@@ -143,4 +152,9 @@ export default {
 .pointer {
     cursor: pointer !important;
 }
+
+.line-height-1 {
+    line-height: 1.1rem;
+}
+
 </style>

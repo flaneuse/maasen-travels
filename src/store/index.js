@@ -46,6 +46,43 @@ export default new Vuex.Store({
     totals: null,
     stateTotals: null,
     totalCounties: null,
+    colorPalette: {
+      "all": {
+        color: "#a65628",
+        label: "all"
+      },
+      "Rich": {
+        color: "#e41a1c",
+        lightColor: "#fdd3d3",
+        label: "Rich"
+      },
+      "Nancy": {
+        color: "#3773b8",
+        lightColor: "#cee5ff",
+        label: "Nancy"
+      },
+      "Laura": {
+        color: "#ffff33",
+        lightColor: "#ffffc1",
+        label: "Laura"
+      },
+      "rhlh": {
+        color: "#ff7f00",
+        label: "Rich & Laura"
+      },
+      "nhlh": {
+        color: "#4daf4a",
+        label: "Nancy & Laura"
+      },
+      "rhnh": {
+        color: "#984ea3",
+        label: "Rich & Nancy"
+      },
+      "unknown": {
+        color: "#babab0",
+        label: "no one"
+      }
+    }
   },
   mutations: {},
   actions: {

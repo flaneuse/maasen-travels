@@ -151,41 +151,7 @@ export default {
       totalBarHeight: 25,
 
       // input options
-      selectedPeople: ["Rich", "Nancy", "Laura"],
-      colorPalette: {
-        "all": {
-          color: "#a65628",
-          label: "all"
-        },
-        "Rich": {
-          color: "#e41a1c",
-          label: "Rich"
-        },
-        "Nancy": {
-          color: "#3773b8",
-          label: "Nancy"
-        },
-        "Laura": {
-          color: "#ffff33",
-          label: "Laura"
-        },
-        "rhlh": {
-          color: "#ff7f00",
-          label: "Rich & Laura"
-        },
-        "nhlh": {
-          color: "#4daf4a",
-          label: "Nancy & Laura"
-        },
-        "rhnh": {
-          color: "#984ea3",
-          label: "Rich & Nancy"
-        },
-        "unknown": {
-          color: "#babab0",
-          label: "no one"
-        }
-      }
+      selectedPeople: ["Rich", "Nancy", "Laura"]
     })
   },
   computed: {
@@ -203,6 +169,9 @@ export default {
     },
     stateTotals() {
       return store.state.stateTotals
+    },
+    colorPalette() {
+      return store.state.colorPalette
     },
     mapStyle() {
       return (`height: ${this.height}px`)
