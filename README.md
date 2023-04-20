@@ -1,2 +1,2 @@
-# hughes-travels
- Maps of where the Hughes family have been in the United States
+# maasen-travels
+ Maps of where the Maasen family have been in the United States
