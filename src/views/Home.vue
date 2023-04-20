@@ -1,7 +1,7 @@
 <template>
 <div>
   <h1>
-    How many counties in the United States have the Hughes family visited?
+    How many counties in the United States have the Maasen family visited?
   </h1>
   <div class="d-flex align-items-center w-100 m-3" v-if="loading">
     <strong class="mx-5">Loading...</strong>
