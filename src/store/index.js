@@ -40,43 +40,43 @@ const calcTotal = function(results, person, totalCounties, totalBarWidth = 300) 
 export default new Vuex.Store({
   state: {
     loading: false,
-    people: ["Rich", "Nancy", "Laura"],
+    people: ["Karol", "Bob"],
     geojson: null,
     states: null,
     totals: null,
     stateTotals: null,
     totalCounties: null,
     colorPalette: {
-      "all": {
-        color: "#a65628",
-        label: "all"
-      },
-      "Rich": {
+      // "all": {
+      //   color: "#a65628",
+      //   label: "all"
+      // },
+      "Bob": {
         color: "#e41a1c",
         lightColor: "#fdd3d3",
-        label: "Rich"
+        label: "Bob"
       },
-      "Nancy": {
+      "Karol": {
         color: "#3773b8",
         lightColor: "#cee5ff",
-        label: "Nancy"
+        label: "Karol"
       },
-      "Laura": {
-        color: "#ffff33",
-        lightColor: "#ffffc1",
-        label: "Laura"
-      },
-      "rhlh": {
-        color: "#ff7f00",
-        label: "Rich & Laura"
-      },
-      "nhlh": {
-        color: "#4daf4a",
-        label: "Nancy & Laura"
-      },
-      "rhnh": {
+      // "Laura": {
+      //   color: "#ffff33",
+      //   lightColor: "#ffffc1",
+      //   label: "Laura"
+      // },
+      // "rhlh": {
+      //   color: "#ff7f00",
+      //   label: "Rich & Laura"
+      // },
+      // "nhlh": {
+      //   color: "#4daf4a",
+      //   label: "Nancy & Laura"
+      // },
+      "kb": {
         color: "#984ea3",
-        label: "Rich & Nancy"
+        label: "Karol & Bob"
       },
       "unknown": {
         color: "#babab0",
@@ -92,7 +92,7 @@ export default new Vuex.Store({
       const reader = require('g-sheets-api');
       const readerOptions = {
         apiKey: process.env.VUE_APP_GOOGLESHEETS_API_KEY,
-        sheetId: '1Jmjx3MKxUlREiJ0lul9gdQ73YPKSydAbX-ZLq9MDCVY',
+        sheetId: '1_nvgo6gKDWsB38Csn2yX1rbcVQQ2IBOaFic1rz4KBV0', // Link to Google sheet. Should have permissions set to "anyone with link can view"
         sheetName: 'us_counties',
         returnAllResults: true
       };
@@ -140,21 +140,16 @@ export default new Vuex.Store({
             d["properties"]["population"] = filtered[0].population_2019;
             d["properties"]["state"] = filtered[0].state;
 
-            const rich = filtered[0].Rich === "1";
-            const nancy = filtered[0].Nancy === "1";
-            const laura = filtered[0].Laura === "1";
+            const karol = filtered[0].Karol === "1";
+            const bob = filtered[0].Bob === "1";
+
             // calculating the color
-            const value = rich && nancy && laura ? "all" :
-              rich && nancy ? "rhnh" :
-              rich && laura ? "rhlh" :
-              nancy && laura ? "nhlh" :
-              rich ? "Rich" :
-              nancy ? "Nancy" :
-              laura ? "Laura" :
+            const value = karol && bob ? "kb" :
+              karol ? "Karol" :
+              bob ? "Bob" :
               "unknown";
-            d["properties"]["rich"] = rich;
-            d["properties"]["nancy"] = nancy;
-            d["properties"]["laura"] = laura;
+            d["properties"]["karol"] = karol;
+            d["properties"]["bob"] = bob;
 
             d["properties"]["fillColor"] = value; //this.colorPalette[value].color;
           }
