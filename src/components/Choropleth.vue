@@ -106,13 +106,10 @@ export default {
           population (est. 2019): ${feature.properties.population}
           </div>
           <div>
-          Rich: ${feature.properties.rich ? '<i class="fas fa-square"></i>' : '<i class="far fa-square"></i>'}
+          Karol: ${feature.properties.karol ? '<i class="fas fa-square"></i>' : '<i class="far fa-square"></i>'}
           </div>
           <div>
-          Nancy: ${feature.properties.nancy ? '<i class="fas fa-square"></i>' : '<i class="far fa-square"></i>'}
-          </div>
-          <div>
-          Laura: ${feature.properties.laura ? '<i class="fas fa-square"></i>' : '<i class="far fa-square"></i>'}
+          Bob: ${feature.properties.bob ? '<i class="fas fa-square"></i>' : '<i class="far fa-square"></i>'}
           </div>
           <div>
           land area: ${feature.properties.ALAND.toLocaleString()} sq. m
