@@ -33,6 +33,9 @@
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
   },
+  "scripts": {
+  "serve": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service serve"
+},
   "eslintConfig": {
     "root": true,
     "env": {

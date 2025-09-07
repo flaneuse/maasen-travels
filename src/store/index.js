@@ -92,7 +92,7 @@ export default new Vuex.Store({
       const reader = require('g-sheets-api');
       const readerOptions = {
         apiKey: process.env.VUE_APP_GOOGLESHEETS_API_KEY,
-        sheetId: '1_nvgo6gKDWsB38Csn2yX1rbcVQQ2IBOaFic1rz4KBV0', // Link to Google sheet. Should have permissions set to "anyone with link can view"
+        sheetId: '1BxwJ7HZQ1tfjog-ChX0WCuk80Ay2dFC1SmBfhdmyicE', // Link to Google sheet. Should have permissions set to "anyone with link can view"
         sheetName: 'us_counties',
         returnAllResults: true
       };
